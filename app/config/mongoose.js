@@ -13,10 +13,13 @@ function initMongoose() {
     useUnifiedTopology: true
   });
 
-  process.on('SIGNINT', cleanup)
+  process.on('SIGINT', cleanup) // for Ctrl + c
+  process.on('SIGTERM', cleanup) // when terminate a process
+  process.on('SIGHUP', cleanup)  // terminal goes away
 }
 
 function cleanup() {
+  console.log('cleanup');
   mongoose.connection.close(function() {
     process.exit()
   })
